@@ -1,20 +1,34 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+  //import Home from './components/Home.vue'
+  //import Login from './components/Login.vue'
+  //import Profile from './components/Profile.vue'
+  //import RecipeCreate from './components/RecipeCreate.vue'
+  import axios from 'axios'
+
+  export default {
+    data() {
+      return {message:''};
+    },
+    async mounted() {
+      await this.helloWorld()
+    },
+    methods: {
+      async helloWorld() {
+        try {
+          const response = await axios.get('/api')
+          this.message = response.data.message
+        } catch (error) {
+          console.error('Error connecting: ', error)
+        }
+      }
+    }
+  };
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div>
+    <h1>{{  message  }}</h1>
+  </div>
 </template>
 
 <style scoped>
