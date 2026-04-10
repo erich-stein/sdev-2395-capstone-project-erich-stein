@@ -1,9 +1,6 @@
 <script>
-  //import Home from './components/Home.vue'
-  //import Login from './components/Login.vue'
-  //import Profile from './components/Profile.vue'
-  //import RecipeCreate from './components/RecipeCreate.vue'
   import axios from 'axios'
+  import { RouterLink, RouterView } from 'vue-router';
 
   export default {
     data() {
@@ -26,9 +23,20 @@
 </script>
 
 <template>
-  <div>
-    <h1>{{  message  }}</h1>
-  </div>
+  <h1>{{  message  }}</h1>
+  <nav>
+    <div>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/login">Login</RouterLink>
+      <RouterLink to="/profile">Profile</RouterLink>
+      <RouterLink to="/create-recipe">Create Recipe</RouterLink>
+    </div>
+  </nav>
+
+  <main>
+    <RouterView />
+  </main>
+
 </template>
 
 <style scoped>
