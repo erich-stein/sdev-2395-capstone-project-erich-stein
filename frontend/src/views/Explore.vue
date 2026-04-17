@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div class="login">
+  <div class="explore">
     <h1>Welcome to the Recipe Book!</h1>
-    <p>This is the login page.</p>
+    <p>This is the recipe exporation page.</p>
   </div>
 
 </template>

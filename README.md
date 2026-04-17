@@ -8,6 +8,8 @@ python3 app.py
 
 cd frontend
 
+npm install
+
 npm run dev
 
 ## Requires

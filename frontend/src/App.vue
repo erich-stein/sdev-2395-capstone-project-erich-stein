@@ -13,7 +13,7 @@
       async helloWorld() {
         try {
           const response = await axios.get('/api')
-          this.message = response.data.message
+          this.message = response.data?.message
         } catch (error) {
           console.error('Error connecting: ', error)
         }
@@ -23,19 +23,23 @@
 </script>
 
 <template>
-  <h1>{{  message  }}</h1>
-  <nav>
-    <div>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
-      <RouterLink to="/profile">Profile</RouterLink>
-      <RouterLink to="/create-recipe">Create Recipe</RouterLink>
+  <header>
+    <div class="wrapper">
+      <nav>
+        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink to="/explore">Explore Recipes</RouterLink>
+        <RouterLink to="/create-recipe">Create Recipe</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/create-account">Create Account</RouterLink>
+      </nav>
     </div>
-  </nav>
+  </header>
+  <br/>
+  <h1>{{ message }}</h1>
+  <br/>
 
-  <main>
-    <RouterView />
-  </main>
+  <RouterView />
 
 </template>
 

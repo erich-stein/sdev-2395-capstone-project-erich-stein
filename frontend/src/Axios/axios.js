@@ -1,0 +1,35 @@
+import axios from 'axios'
+
+const axiosInstance = axios.create({
+  baseURL: '',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+axiosInstance.interceptors.request.use(
+  function (config) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  }, function (error) {
+    return Promise.reject(error)
+  }
+)
+
+axiosInstance.interceptors.response.use(
+  function (response) {
+    return response
+  }, function (error) {
+    if (error.response?.status === 401) {
+      console.error('Authentication failed')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default axiosInstance
