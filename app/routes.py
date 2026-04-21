@@ -1,25 +1,10 @@
-from flask import Flask, jsonify, request
-from config import Config
-from flask_cors import CORS
+from app import app
+from flask import jsonify, request
 from loguru import logger
 from flask_jwt_extended import (
-  JWTManager, jwt_required, get_jwt_identity,
+  jwt_required, get_jwt_identity,
   create_access_token, get_jwt
 )
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-
-logger.remove(0)
-logger.add('app.log', level="TRACE")
-
-app = Flask(__name__)
-app.config.from_object(Config)
-CORS(app, supports_credentials=True, origins=['http://localhost:5173'])
-jwt = JWTManager(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-import models
 
 # mock data
 USERS = {
@@ -77,6 +62,3 @@ def profile():
     'username': username,
     'message': 'User info here'
   }), 200
-
-if __name__ == '__main__':
-  app.run(debug=True)
