@@ -6,6 +6,8 @@ from flask_jwt_extended import (
   JWTManager, jwt_required, get_jwt_identity,
   create_access_token, get_jwt
 )
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 logger.remove(0)
 logger.add('app.log', level="TRACE")
@@ -14,6 +16,10 @@ app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app, supports_credentials=True, origins=['http://localhost:5173'])
 jwt = JWTManager(app)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+import models
 
 # mock data
 USERS = {
