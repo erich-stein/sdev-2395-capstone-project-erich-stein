@@ -2,7 +2,9 @@
 
 ### Terminal 1
 
-python3 app.py
+pip install -r requirements.txt
+
+flask run
 
 ### Terminal 2
 

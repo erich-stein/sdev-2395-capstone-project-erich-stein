@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios'
+import axios from '../axios/axios'
 
 export default {
   data() {
@@ -7,12 +7,14 @@ export default {
       username: '',
       password: '',
       loading: false,
+      message: '',
       errorMessage: ''
     }
   },
   methods: {
     async login() {
       this.errorMessage = ''
+      this.message = ''
 
       if (!this.username || !this.password) {
         this.errorMessage = 'Please enter both username and password'
@@ -33,21 +35,30 @@ export default {
             console.log(response.data.user)
             localStorage.setItem('user', JSON.stringify(response.data.user))
           }
-          console.log('Login successful')
-          this.$router.push('/')
+          if (response.status === 200) {
+            this.message = response?.data?.message
+            console.log(this.message)
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 2000)
+          }
+          
         } else {
           this.errorMessage = 'Login failed - no token'
         }
       } catch (error) {
         if (error.response) {
           // server responded with error
-          this.errorMessage = error.response?.data?.message || 'Login failed'
+          this.errorMessage = error.response?.data?.errorMessage || 'Login failed'
+          console.error(this.errorMessage)
         } else if (error.request) {
           // request but no response
           this.errorMessage = 'Cannot connect to server'
+          console.error(this.errorMessage)
         } else {
-          // dunno
+          // something else
           this.errorMessage = 'Unexpected error'
+          console.error(error.response.data.msg)
         }
       } finally {
         this.loading = false
@@ -95,6 +106,7 @@ export default {
       </button>
     </form>
 
+    <p v-if="message" class="message">{{ message }}</p>
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
     <div class="register-link">

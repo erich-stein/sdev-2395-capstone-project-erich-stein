@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const axiosInstance = axios.create({
   baseURL: '',
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -10,7 +11,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     const token = localStorage.getItem('token')
-    if (token) {
+    if (token && token !== 'null' && token !== 'undefined') {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config

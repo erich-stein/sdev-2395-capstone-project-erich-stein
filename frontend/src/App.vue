@@ -1,8 +1,13 @@
 <script>
-  import axios from 'axios'
+  import axios from './axios/axios'
   import { RouterLink, RouterView } from 'vue-router';
 
   export default {
+    computed: {
+      isLoggedIn() {
+        return !!localStorage.getItem('token')
+      }
+    },
     data() {
       return {message:''};
     },
@@ -10,6 +15,14 @@
       await this.helloWorld()
     },
     methods: {
+      // modify this so it shows even without refresh
+      // use reactivity already in vue or use pinia
+      logout() {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        window.location.reload()
+        this.$router.push('/login')
+      },
       async helloWorld() {
         try {
           const response = await axios.get('/api')
@@ -32,6 +45,7 @@
         <RouterLink to="/create-recipe">Create Recipe</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/create-account">Create Account</RouterLink>
+        <button v-if="isLoggedIn" @click="logout">Logout</button>
       </nav>
     </div>
   </header>

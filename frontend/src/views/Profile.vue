@@ -1,5 +1,5 @@
 <script>
-import axios from 'axios'
+import axios from '../axios/axios'
 
 export default {
   data() {
@@ -23,15 +23,15 @@ export default {
         this.username = response.data.username
         this.userId = response.data.user_id
       } catch (error) {
-        console.error('Error connecting: ', error)
         if (error.response?.status === 401) {
+          // missing authorization
           this.errorMessage = 'Please login'
-        } else if (error.response?.status === 422) {
-          this.errorMessage = 'Validation error'
-        } else {
-          this.errorMessage = error.response?.data?.message || 'Error loading profile'
+          console.error(this.errorMessage)
+        } else if (error.response) {
+          // something else
+          console.error(error.response?.data?.msg)
         }
-        //this.$router.push('/login')
+        this.$router.push('/login')
       }
     }
   }

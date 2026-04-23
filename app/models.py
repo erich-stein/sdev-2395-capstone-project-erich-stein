@@ -27,10 +27,11 @@ class Recipe(db.Model):
   __tablename__ = 'recipes'
 
   id: so.Mapped[int] = so.mapped_column(primary_key=True)
-  #title
-  #long_desc
-  #short_desc
-  #tags
+  #title name of recipe
+  #long_desc for recipe page
+  #short_desc for recipe card
+  #categories main, side, dessert, etc.
+  #tags meat, vegetarian, vegan, pork, beef, lamb, etc. maybe a list of selectables
   #ingredients
   #instructions
   timestamp: so.Mapped[datetime] = so.mapped_column(
