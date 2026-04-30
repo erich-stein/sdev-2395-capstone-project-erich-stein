@@ -6,6 +6,8 @@
   import CreateRecipe from './views/CreateRecipe.vue'
   import CreateAccount from './views/CreateAccount.vue'
   import Explore from './views/Explore.vue'
+  import Recipe from './views/Recipe.vue'
+  import EditRecipe from './views/EditRecipe.vue'
 
   const routes = [
     {
@@ -39,6 +41,17 @@
       path: '/explore',
       name: 'Explore',
       component: Explore
+    },
+    {
+      path: '/recipe/:id',
+      name: 'Recipe',
+      component: Recipe
+    },
+    {
+      path: '/recipe/:id/edit',
+      name: 'EditRecipe',
+      component: EditRecipe,
+      meta: {requiresAuth: true}
     },
   ]
 
