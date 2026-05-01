@@ -113,13 +113,13 @@ def createRecipe():
   ingredients = data.get('ingredients', [])
   instructions = data.get('instructions', [])
 
-  if not title:
+  if not str(title):
     return jsonify({'errorMessage': 'Recipe name is required'}), 400
-  if not short_desc:
+  if not str(short_desc):
     return jsonify({'errorMessage': 'Short description is required'}), 400
-  if not ingredients:
+  if not str(ingredients):
     return jsonify({'errorMessage': 'Ingredients list is required'}), 400
-  if not instructions:
+  if not str(instructions):
     return jsonify({'errorMessage': 'Instructions list is required'}), 400
 
   try:
@@ -209,3 +209,23 @@ def delete_recipe(id):
     db.session.rollback()
     print(f"Error deleting recipe: {str(err)}")
     return jsonify({'errorMessage': 'Error deleting recipe'})
+  
+# maybe have this be the default page and replace the existing '/' route
+# get all recipes for now, add pagination later
+@app.route('/api/explore', methods=['GET'])
+def explore():
+  try:
+    query = sa.select(Recipe).order_by(Recipe.timestamp.desc())
+    recipes = db.session.execute(query).scalars().all()
+
+    recipes_json = [recipe.to_json() for recipe in recipes]
+
+    return jsonify(recipes_json), 200
+  except Exception as err:
+    print(f"Error retrieving recipes: {str(err)}")
+    return jsonify({'errorMessage': 'Error retrieving recipes'})
+
+# get searchTerm and searchType (title or tags, maybe descriptions or ingredients)
+#@app.route('/api/explore/search', methods=['GET', 'POST'])
+#def search():
+#  return
