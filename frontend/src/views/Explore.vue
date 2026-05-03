@@ -1,14 +1,17 @@
 <script>
 import axios from '../axios/axios'
 import RecipeCard from '../components/RecipeCard.vue'
+import SearchBar from '../components/SearchBar.vue'
 
 export default {
-  components: { RecipeCard },
+  components: { RecipeCard, SearchBar },
   data() {
     return {
       recipes: [],
       loading: false,
-      errorMessage: ''
+      errorMessage: '',
+      searchTerm: '',
+      searchType: 'title'
     }
   },
   async mounted() {
@@ -19,8 +22,13 @@ export default {
       this.loading = true
       this.errorMessage = ''
 
+      let url = '/api/explore'
+      if (this.searchTerm) {
+        url = `/api/explore/search?term=${encodeURIComponent(this.searchTerm)}&type=${this.searchType}`
+      }
+
       try {
-        const response = await axios.get('/api/explore')
+        const response = await axios.get(url)
         this.recipes = response.data
         console.log(`Retrieved ${this.recipes.length} recipes`)
 
@@ -44,6 +52,19 @@ export default {
         this.loading = false
       }
     },
+    async handleSearch(term, type) {
+      //console.log('searchTerm: ', term, 'Type: ', typeof term)
+      //console.log('searchType: ', type, 'Type: ', typeof type)
+      if (!term || term.trim() === '') {
+        this.searchTerm = ''
+        await this.getRecipes()
+        return
+      }
+
+      this.searchTerm = term.trim()
+      this.searchType = type
+      await this.getRecipes()
+    },
     routeToCreateRecipe() {
       this.$router.push('/create-recipe')
     }
@@ -53,6 +74,10 @@ export default {
 </script>
 
 <template>
+  <div class="search-bar">
+    <SearchBar @search="handleSearch" />
+  </div>
+
   <div v-if="errorMessage" class="error-message">
     <h2>{{ errorMessage }}</h2>
     <button type="button" @click="$forceUpdate()">

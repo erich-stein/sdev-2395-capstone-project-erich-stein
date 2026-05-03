@@ -3,6 +3,7 @@ from flask import jsonify, request
 from .models import User, Recipe
 from app import db
 import sqlalchemy as sa
+from datetime import datetime, timezone
 from loguru import logger
 from flask_jwt_extended import (
   jwt_required, get_jwt_identity,
@@ -83,20 +84,27 @@ def createAccount():
     print(f"Error creating account: {str(err)}")
     return jsonify({'errorMessage': 'Error creating account'})
 
-# needs error handling here and in view
 # simple profile page, mostly just for showing recipes by the user
 # maybe make it dynamic or add separate user route
 @app.route('/api/profile', methods=['GET'])
 @jwt_required()
 def profile():
-  current_user_id = get_jwt_identity()
   user = get_jwt()
+  user_id = int(get_jwt_identity())
   username = user.get('username')
-  return jsonify({
-    'user_id': current_user_id,
-    'username': username,
-    'message': 'User recipes here'
-  }), 200
+
+  try:
+    query = sa.select(Recipe).where(
+      Recipe.user_id == user_id).order_by(Recipe.timestamp.desc())
+    
+    recipes = db.session.execute(query).scalars().all()
+    recipes_json = [recipe.to_json() for recipe in recipes]
+
+    return jsonify({
+    'recipes': recipes_json, 'username': username }), 200
+  except Exception as err:
+    print(f"Error retrieving recipes: {str(err)}")
+    return jsonify({'errorMessage': 'Error retrieving recipes'})
 
 @app.route('/api/create-recipe', methods=['POST'])
 @jwt_required()
@@ -182,6 +190,8 @@ def update_recipe(id):
     if 'instructions' in data:
       recipe.instructions = data.get('instructions')
 
+    recipe.updated = datetime.now(timezone.utc)
+
     db.session.commit()
     return jsonify(recipe.to_json()), 200
   except Exception as err:
@@ -225,7 +235,37 @@ def explore():
     print(f"Error retrieving recipes: {str(err)}")
     return jsonify({'errorMessage': 'Error retrieving recipes'})
 
-# get searchTerm and searchType (title or tags, maybe descriptions or ingredients)
-#@app.route('/api/explore/search', methods=['GET', 'POST'])
-#def search():
-#  return
+# get searchTerm and searchType (title or tags for now, maybe descriptions or ingredients)
+@app.route('/api/explore/search', methods=['GET', 'POST'])
+def search():
+  search_term = request.args.get('term', '')
+  search_type = request.args.get('type', 'title')
+
+  # fallback if no search_term, same as query in explore route
+  if not search_term:
+    query = sa.select(Recipe).order_by(Recipe.timestamp.desc())
+    recipes = db.session.execute(query).scalars().all()
+    recipes_json = [recipe.to_json() for recipe in recipes]
+    return jsonify(recipes_json), 200
+
+  try:
+    if search_type == 'title':
+      # case instensitive
+      query = sa.select(Recipe).where(
+        Recipe.title.ilike(f'%{search_term}%')).order_by(Recipe.timestamp.desc())
+    
+    elif search_type == 'tags':
+      query = sa.select(Recipe).where(
+        sa.cast(Recipe.tags, sa.String).ilike(f'%{search_term}%')
+        ).order_by(Recipe.timestamp.desc())
+      
+    else:
+      return jsonify({'errorMessage': 'Invalid search type'})
+      
+    recipes = db.session.execute(query).scalars().all()
+    recipes_json = [recipe.to_json() for recipe in recipes]
+
+    return jsonify(recipes_json), 200
+  except Exception as err:
+    print(f"Error retrieving recipes: {str(err)}")
+    return jsonify({'errorMessage': 'Error retrieving recipes'})
