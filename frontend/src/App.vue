@@ -15,8 +15,9 @@
       await this.helloWorld()
     },
     methods: {
-      // modify this so it shows even without refresh
+      // modify login/logout so options show even without refresh
       // use reactivity already in vue or use pinia
+      // pinia is probably easier
       logout() {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
@@ -40,11 +41,11 @@
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink v-if="isLoggedIn" to="/profile">Profile</RouterLink>
         <RouterLink to="/explore">Explore Recipes</RouterLink>
-        <RouterLink to="/create-recipe">Create Recipe</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/create-account">Create Account</RouterLink>
+        <RouterLink v-if="isLoggedIn" to="/create-recipe">Create Recipe</RouterLink>
+        <RouterLink v-if="!isLoggedIn" to="/login">Login</RouterLink>
+        <RouterLink v-if="!isLoggedIn" to="/create-account">Create Account</RouterLink>
         <button v-if="isLoggedIn" @click="logout">Logout</button>
       </nav>
     </div>

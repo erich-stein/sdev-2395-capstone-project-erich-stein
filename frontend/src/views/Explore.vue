@@ -2,16 +2,18 @@
 import axios from '../axios/axios'
 import RecipeCard from '../components/RecipeCard.vue'
 import SearchBar from '../components/SearchBar.vue'
+import CategoryFilter from '../components/CategoryFilter.vue'
 
 export default {
-  components: { RecipeCard, SearchBar },
+  components: { RecipeCard, SearchBar, CategoryFilter },
   data() {
     return {
       recipes: [],
       loading: false,
       errorMessage: '',
       searchTerm: '',
-      searchType: 'title'
+      searchType: 'title',
+      selectedCategories: []
     }
   },
   async mounted() {
@@ -23,14 +25,29 @@ export default {
       this.errorMessage = ''
 
       let url = '/api/explore'
+      const params = []
+
       if (this.searchTerm) {
-        url = `/api/explore/search?term=${encodeURIComponent(this.searchTerm)}&type=${this.searchType}`
+        params.push(`term=${encodeURIComponent(this.searchTerm)}`)
+        params.push(`type=${this.searchType}`)
+      }
+      
+      if (this.selectedCategories.length > 0) {
+        this.selectedCategories.forEach(cat => {
+          params.push(`categories=${cat}`)
+        })
+      }
+
+      if (params.length > 0) {
+        url = `/api/explore/search?${params.join('&')}`
+      } else {
+        url = '/api/explore'
       }
 
       try {
         const response = await axios.get(url)
         this.recipes = response.data
-        console.log(`Retrieved ${this.recipes.length} recipes`)
+        //console.log(`Retrieved ${this.recipes.length} recipes`)
 
       } catch (error) {
         console.error('Error retrieving recipes: ', error)
@@ -65,6 +82,10 @@ export default {
       this.searchType = type
       await this.getRecipes()
     },
+    async handleCatFilter(categories) {
+      this.selectedCategories = categories
+      await this.getRecipes()
+    },
     routeToCreateRecipe() {
       this.$router.push('/create-recipe')
     }
@@ -74,6 +95,10 @@ export default {
 </script>
 
 <template>
+  <div class="filter-group">
+    <CategoryFilter @filter-change="handleCatFilter" />
+  </div>
+
   <div class="search-bar">
     <SearchBar @search="handleSearch" />
   </div>

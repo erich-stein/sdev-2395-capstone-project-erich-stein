@@ -14,7 +14,7 @@ from flask_jwt_extended import (
 @app.route('/api', methods=['GET'])
 def hello_world():
   logger.debug('Retrieving data.')
-  return jsonify({"message":"Hello, World!"})
+  return jsonify({"message":"Welcome to the Recipe Book!"})
 
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
@@ -235,34 +235,43 @@ def explore():
     print(f"Error retrieving recipes: {str(err)}")
     return jsonify({'errorMessage': 'Error retrieving recipes'})
 
-# get searchTerm and searchType (title or tags for now, maybe descriptions or ingredients)
+# get searchTerm, searchType (title or tags for now, can add others),
+# and categories from search parameters
 @app.route('/api/explore/search', methods=['GET', 'POST'])
 def search():
   search_term = request.args.get('term', '')
   search_type = request.args.get('type', 'title')
+  categories = request.args.getlist('categories')
 
-  # fallback if no search_term, same as query in explore route
-  if not search_term:
-    query = sa.select(Recipe).order_by(Recipe.timestamp.desc())
-    recipes = db.session.execute(query).scalars().all()
-    recipes_json = [recipe.to_json() for recipe in recipes]
-    return jsonify(recipes_json), 200
+  query = sa.select(Recipe)
 
   try:
-    if search_type == 'title':
-      # case instensitive
-      query = sa.select(Recipe).where(
-        Recipe.title.ilike(f'%{search_term}%')).order_by(Recipe.timestamp.desc())
-    
-    elif search_type == 'tags':
-      query = sa.select(Recipe).where(
-        sa.cast(Recipe.tags, sa.String).ilike(f'%{search_term}%')
-        ).order_by(Recipe.timestamp.desc())
+    if categories:
+      # converts JSON dict to string and checks if it contains the category
+      category_list = []
+      for category in categories:
+        category_list.append(
+          sa.cast(Recipe.categories, sa.String).contains(f'"{category}"'))
+      
+      query = query.where(sa.or_(*category_list))
+
+    if search_type:
+      # both use ilike to work with partial matches
+      if search_type == 'title':
+        # simple case instensitive search
+        query = query.where(
+          Recipe.title.ilike(f'%{search_term}%'))
+      
+      elif search_type == 'tags':
+        # also converts JSON dict to string
+        query = query.where(
+          sa.cast(Recipe.tags, sa.String).ilike(f'%{search_term}%'))
       
     else:
       return jsonify({'errorMessage': 'Invalid search type'})
       
-    recipes = db.session.execute(query).scalars().all()
+    recipes = db.session.execute(
+      query.order_by(Recipe.timestamp.desc())).scalars().all()
     recipes_json = [recipe.to_json() for recipe in recipes]
 
     return jsonify(recipes_json), 200
