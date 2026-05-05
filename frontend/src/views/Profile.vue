@@ -80,16 +80,25 @@ export default {
     <button type="button" @click="routeToCreateRecipe">Create A Recipe</button>
   </div>
 
-  <div v-else class="recipes-grid">
-    <RecipeCard
-      v-for="recipe in recipes"
-      :key="recipe.id"
-      :recipe="recipe"
-    />
+  <div v-else class="has-recipes">
+    <h3>Here are your recipes!</h3>
+    <div class="recipes-grid">
+      <RecipeCard
+        v-for="recipe in recipes"
+        :key="recipe.id"
+        :recipe="recipe"
+      />
+    </div>
   </div>
 
 </template>
 
 <style scoped>
+.recipes-grid {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px
+}
 
 </style>

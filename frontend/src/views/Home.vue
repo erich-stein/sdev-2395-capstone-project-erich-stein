@@ -4,12 +4,12 @@
 
 <template>
   <div class="home">
-    <h1>Welcome to the Recipe Book!</h1>
-    <p>This is the home page.</p>
+    <h2>This is a recipe book web application.</h2>
+    <p>Made by Erich Stein.</p>
   </div>
 
 </template>
 
-<style>
+<style scoped>
 
 </style>

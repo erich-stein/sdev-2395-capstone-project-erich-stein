@@ -22,6 +22,7 @@ export default {
   <div class="search-bar">
     <input
       type="text"
+      class="input"
       v-model="searchTerm"
       placeholder="Search..."
       @keyup.enter="search"
@@ -30,7 +31,9 @@ export default {
       <option value="title">Name</option>
       <option value="tags">Tags</option>
     </select>
-    <button type="button" @click="search">Search</button>
+    <button type="button" @click="search">
+      <span>Search</span>
+    </button>
   </div>
 
 </template>

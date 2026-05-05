@@ -40,13 +40,27 @@
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink v-if="isLoggedIn" to="/profile">Profile</RouterLink>
-        <RouterLink to="/explore">Explore Recipes</RouterLink>
-        <RouterLink v-if="isLoggedIn" to="/create-recipe">Create Recipe</RouterLink>
-        <RouterLink v-if="!isLoggedIn" to="/login">Login</RouterLink>
-        <RouterLink v-if="!isLoggedIn" to="/create-account">Create Account</RouterLink>
-        <button v-if="isLoggedIn" @click="logout">Logout</button>
+        <RouterLink class="router-link" to="/">
+          <span>Home</span>
+        </RouterLink>
+        <RouterLink class="router-link" v-if="isLoggedIn" to="/profile">
+          <span>Profile</span>
+        </RouterLink>
+        <RouterLink class="router-link" to="/explore">
+          <span>Explore Recipes</span>
+        </RouterLink>
+        <RouterLink class="router-link" v-if="isLoggedIn" to="/create-recipe">
+          <span>Create Recipe</span>
+        </RouterLink>
+        <RouterLink class="router-link" v-if="!isLoggedIn" to="/login">
+          <span>Login</span>
+        </RouterLink>
+        <RouterLink class="router-link" v-if="!isLoggedIn" to="/create-account">
+          <span>Create Account</span>
+        </RouterLink>
+        <button v-if="isLoggedIn" @click="logout">
+          <span>Logout</span>
+        </button>
       </nav>
     </div>
   </header>

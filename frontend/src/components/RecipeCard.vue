@@ -37,7 +37,13 @@ export default {
 
 <style scoped>
 .recipe-card {
-  border: 2px solid
+  border-radius: 0.75rem;
+  /*background-image: linear-gradient(144deg, #af40ff, #f342d6 50%, #e7eb00);*/
+  background-image: linear-gradient(144deg, #3bbec7, #f5eabc 80%);
+  padding: 4px;
+  color:#ffffff;
+  box-shadow: rgba(0, 0, 0, 0.438) 4px 5px 15px -5px;
+  cursor: pointer;
 }
 
 </style>

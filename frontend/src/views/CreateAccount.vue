@@ -76,16 +76,14 @@ export default {
 
 <template>
   <div class="createAccount">
-    <h1>Welcome to the Recipe Book!</h1>
-    <p>This is the account creation page.</p>
-
-    <br/>
+    <h1>Create Account</h1>
 
     <form @submit.prevent="createAccount">
       <hr/>
       <div>
         <input
           v-model="username"
+          class="input"
           type="text"
           placeholder="Username"
           required
@@ -95,6 +93,7 @@ export default {
       <div>
         <input
           v-model="password"
+          class="input"
           type="password"
           placeholder="Password"
           required
@@ -104,6 +103,7 @@ export default {
       <div>
         <input
           v-model="password_confirm"
+          class="input"
           type="password"
           placeholder="Confirm Password"
           required
@@ -123,7 +123,7 @@ export default {
     <div class="login-link">
       <p>Already have an account?</p>
       <button type="button" @click="routeToLogin" :disabled="loading">
-        Login here!
+        <span>Login here!</span>
       </button>
     </div>
   </div>

@@ -21,13 +21,15 @@ export default {
   <div class="category-filter">
     <h2>Filter by Category</h2>
     <div class="category-checkbox-group" v-for="cat in categories" :key="cat">
-      <label>{{ cat }}</label>
-      <input
-        type="checkbox"
-        :value="cat"
-        v-model="selectedCategories"
-        @change="updateFilter"
-      />
+      <label class="checkbox">
+        <input
+          type="checkbox"
+          :value="cat"
+          v-model="selectedCategories"
+          @change="updateFilter"
+        />
+        {{ cat }}
+      </label>
     </div>
   </div>
 

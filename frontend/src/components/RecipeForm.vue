@@ -153,9 +153,10 @@ export default {
         <hr/>
 
         <div class="form-group">
-          <label for="formData.title">Recipe Name</label>
+          <!--label for="formData.title">Recipe Name</label-->
           <input
             v-model="formData.title"
+            class="input"
             type="text"
             placeholder="Name of recipe"
             required
@@ -163,9 +164,10 @@ export default {
           />
         </div>
         <div class="form-group">
-          <label for="formData.short_desc">Short Description</label>
+          <!--label for="formData.short_desc">Short Description</label-->
           <textarea
             v-model="formData.short_desc"
+            class="input"
             type="text"
             rows="2"
             placeholder="Brief description of recipe"
@@ -175,9 +177,10 @@ export default {
           <small>{{ formData.short_desc.length }}</small>
         </div>
         <div class="form-group">
-          <label for="formData.long_desc">Full Description</label>
+          <!--label for="formData.long_desc">Full Description</label-->
           <textarea
             v-model="formData.long_desc"
+            class="input"
             type="text"
             rows="4"
             placeholder="Detailed description of recipe with history, notes, etc..."
@@ -192,13 +195,15 @@ export default {
         <p>Select some categories:</p>
         <hr/>
         <div class="checkbox-group" v-for="cat in categoriesList" :key="cat">
-          <label>{{ cat }}</label>
-          <input
-            type="checkbox"
-            :value="cat"
-            v-model="formData.categories"
-            :disabled="loading"
-          /> 
+          <label class="checkbox">
+            <input
+              type="checkbox"
+              :value="cat"
+              v-model="formData.categories"
+              :disabled="loading"
+            />
+            {{ cat }}
+          </label>
         </div>
         <hr/>
       </div>
@@ -212,16 +217,17 @@ export default {
           <div class="form-input-button">
             <input
               v-model="newTag"
+              class="input"
               type="text"
               placeholder="e.g., vegetarian, meat, quick, spicy..."
               @keyup.enter="addTag"
               :disabled="loading"
             />
             <button type="button" @click="addTag" :disabled="loading">
-              Add Tag
+              <span>Add Tag</span>
             </button>
             <button type="button" @click="removeTag">
-              Remove Last Tag
+              <span>Remove Last Tag</span>
             </button>
           </div>
           <!--Display added tags-->
@@ -243,16 +249,17 @@ export default {
           <div class="form-input-button">
             <input
               v-model="newIngr"
+              class="input"
               type="text"
               placeholder="e.g., 1 cup rice, 1/4 tsp black pepper"
               @keyup.enter="addIngredient"
               :disabled="loading"
             />
             <button type="button" @click="addIngredient" :disabled="loading">
-              Add Ingredient
+              <span>Add Ingredient</span>
             </button>
             <button type="button" @click="removeIngredient">
-              Remove Last Ingredient
+              <span>Remove Last Ingredient</span>
             </button>
           </div>
           <!--Display added ingredients-->
@@ -274,6 +281,7 @@ export default {
           <div class="form-input-button">
             <textarea
               v-model="newInstr"
+              class="input"
               type="text"
               rows="3"
               placeholder="e.g., Combine dry ingredients"
@@ -281,10 +289,10 @@ export default {
               :disabled="loading"
             ></textarea>
             <button type="button" @click="addInstruction" :disabled="loading">
-              Add Instruction
+              <span>Add Instruction</span>
             </button>
             <button type="button" @click="removeInstruction">
-              Remove Last Instruction
+              <span>Remove Last Instruction</span>
             </button>
           </div>
           <!--Display added instructions-->
@@ -299,7 +307,7 @@ export default {
 
       <div class="form-actions">
         <button type="button" @click="cancel" :disabled="loading">
-          Cancel
+          <span>Cancel</span>
         </button>
         <button type="submit" :disabled="loading">
           <span v-if="loading">Saving...</span>
