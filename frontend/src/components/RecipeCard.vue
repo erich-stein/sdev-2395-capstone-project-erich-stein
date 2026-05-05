@@ -1,4 +1,9 @@
 <script>
+/**
+ * Recipe card component to display minimal
+ * information from recipes and make browsing
+ * easier and nicer.
+ */
 export default {
   props: {
     recipe: {

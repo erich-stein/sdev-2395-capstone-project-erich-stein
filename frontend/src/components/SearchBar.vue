@@ -1,4 +1,13 @@
 <script>
+/**
+ * Search bar component that emits a
+ * term and a type.
+ * 
+ * The term is what to search for and
+ * the type is what to search in.
+ * 
+ * Extra types may be added.
+ */
 export default {
   data() {
     return {

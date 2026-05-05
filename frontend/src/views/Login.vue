@@ -58,7 +58,7 @@ export default {
         } else {
           // something else
           this.errorMessage = 'Unexpected error'
-          console.error(error.response.data.msg)
+          console.error(error.response?.data?.msg || 'Unknown error')
         }
       } finally {
         this.loading = false

@@ -1,4 +1,10 @@
 <script>
+/**
+ * Category checkbox component to filter
+ * recipes by category on the explore page
+ * could be used for the profile page but
+ * I didn't.
+ */
 import { CategoriesList } from '../assets/categories'
 
 export default {

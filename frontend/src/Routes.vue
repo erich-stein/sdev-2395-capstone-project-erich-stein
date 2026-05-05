@@ -60,9 +60,10 @@
     routes
   })
 
-  // maybe add something to check if token is valid
-  // and remove it if invalid as a backup
-  // also, a way to hide routes if logged in might go here
+  // Checks if user is authorized when visiting certain
+  // routes and redirects if they are not.
+  // Such routes should be hidden normally but
+  // can be entered into the url.
   router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (!localStorage.getItem('token')) {

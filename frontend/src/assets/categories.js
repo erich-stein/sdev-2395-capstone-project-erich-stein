@@ -3,4 +3,10 @@ export const CategoriesList = [
   'Side',
   'Dessert',
   'Breakfast',
+  'Vegetarian',
+  'Vegan',
+  'Soup',
+  'Salade',
+  'Pasta',
+  'Slow Cooker',
 ]

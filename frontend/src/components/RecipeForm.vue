@@ -1,4 +1,12 @@
 <script>
+/**
+ * Component for recipe form that works with
+ * both creating and editing recipes.
+ * 
+ * Does not use a 'submit' button so that
+ * the enter key may be used to add tags,
+ * ingredients, and instructions.
+ */
 import { CategoriesList } from '../assets/categories'
 
 export default {
@@ -34,7 +42,7 @@ export default {
       newTag: '',
       newIngr: '',
       newInstr: '',
-      loading: false,
+      loading: false, // helps prevent multiple submits and shows saving state
       message: '',
       errorMessage: '',
       categoriesList: CategoriesList
@@ -118,6 +126,7 @@ export default {
       } catch (error) {
         console.error('Error saving recipe: ', error)
         
+        /*
         if (error.response) {
           // server responded with error
           this.errorMessage = error.response?.data?.errorMessage || 'Recipe submission failed'
@@ -129,8 +138,8 @@ export default {
         } else {
           // something else
           this.errorMessage = 'Unexpected error'
-          console.error(error.response.data.msg)
-        }
+          console.error(error.response?.data?.msg || 'Unknown error')
+        } */
       } finally {
         this.loading = false
       }
@@ -309,7 +318,7 @@ export default {
         <button type="button" @click="cancel" :disabled="loading">
           <span>Cancel</span>
         </button>
-        <button type="submit" :disabled="loading">
+        <button type="button" @click="handleFormSubmit" :disabled="loading">
           <span v-if="loading">Saving...</span>
           <span v-else>{{ submitLabel }}</span>
         </button>

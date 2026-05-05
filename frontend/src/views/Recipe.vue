@@ -65,7 +65,7 @@ export default {
         } else {
           // something else
           this.errorMessage = 'Unexpected error'
-          console.error(error.response.data.msg)
+          console.error(error.response?.data?.msg || 'Unknown error')
         }
       } finally {
         this.loading = false
@@ -120,13 +120,17 @@ export default {
         <button type="button" @click="confirmDelete">Delete Recipe</button>
       </div>
 
-      <!--Make it an actual dialogue box later-->
+      <!--Make it an actual dialogue box later maybe-->
       <div v-if="showDeleteDialogue">
         <h3>Delete Recipe?</h3>
         <p>Are you sure you want to delete "{{ recipe?.title }}"? This cannot be undone.</p>
         <div>
-          <button @click="showDeleteDialogue = false">Cancel</button>
-          <button @click="deleteRecipe">Delete</button>
+          <button @click="showDeleteDialogue = false">
+            <span>Cancel</span>
+          </button>
+          <button @click="deleteRecipe">
+            <span>Delete</span>
+          </button>
         </div>
       </div>
     </div>
