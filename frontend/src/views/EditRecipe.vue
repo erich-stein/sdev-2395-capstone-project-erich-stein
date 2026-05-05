@@ -82,7 +82,7 @@ export default {
       Loading recipe data...
     </div>
 
-    <div v-else-if="errorMessage" class="error">
+    <div v-else-if="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
     
@@ -95,7 +95,7 @@ export default {
       />
     </div>
 
-    <div v-if="message" class="message">{{ message }}</div>
+    <div v-if="message" class="-success-message">{{ message }}</div>
   </div>
 
 </template>

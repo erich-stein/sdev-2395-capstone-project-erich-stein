@@ -61,8 +61,8 @@ export default {
     />
   </div>
 
-  <div v-if="message" class="message">{{ message }}</div>
-  <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+  <div v-if="message" class="success-message">{{ message }}</div>
+  <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
 </template>
 

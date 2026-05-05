@@ -105,8 +105,8 @@ export default {
       </button>
     </form>
 
-    <p v-if="message" class="message">{{ message }}</p>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <p v-if="message" class="success-message">{{ message }}</p>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
 
     <div class="register-link">
       <p>Don't have an account?</p>

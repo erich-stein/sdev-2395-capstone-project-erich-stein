@@ -65,7 +65,7 @@
     </div>
   </header>
   <br/>
-  <h1>{{ message }}</h1>
+  <h1 class="welcome-message">{{ message }}</h1>
   <br/>
 
   <RouterView />

@@ -12,6 +12,14 @@ body {
   background-image: linear-gradient(180deg, #3bbec793, #3bbec74b 90%);
 }
 
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
 .input {
   color: #000000;
   border: 2px solid #f5eabc;
